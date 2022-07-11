@@ -1,0 +1,37 @@
+.flex-container {
+    display: flex;
+}
+
+.main-img-container {   
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.section-left {
+    position: fixed;
+}
+
+.section-right-container {
+    position: absolute;
+    top: 0;
+    left: var(--left-panel-width);
+    width: calc(100% - var(--left-panel-width)); 
+}
+
+.btn--container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-main:hover {
+    outline: 3px solid #ceb7fa;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}

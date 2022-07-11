@@ -1,0 +1,99 @@
+.notification-wrapper {
+    z-index: 10;
+    position: fixed;
+    top: 226px;
+    right: 39px;
+    width: 350px;
+    height: 87px;
+}
+
+.notification-item {
+    background: rgba(255, 255, 255, 0.85);
+    /* _Components/Toasts/Border */
+
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /* _Components/Toasts/Shadow */
+
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+    font-family: 'Open Sans';
+
+    border-radius: 4px;
+    overflow: hidden;
+    animation: SlideLeft 0.4s;
+    animation-fill-mode: forwards;
+    width: 350px;
+    height: 87px;
+    padding: 0 12px;
+    margin-bottom: 10px;
+}
+
+@keyframes SlideLeft {
+    0% {
+        margin-left: 120%;
+    }
+
+    100% {
+        margin-left: 0;
+    }
+}
+
+@keyframes SlideRight {
+    0% {
+        margin-left: 0;
+    }
+
+    100% {
+        margin-left: 120%;
+    }
+}
+
+.notification-item.exit {
+    animation: SlideRight 0.4s;
+    animation-fill-mode: forwards;
+}
+
+.top-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+}
+
+.red {
+    display: flex;
+    align-items: center;
+}
+
+.close-btn {
+    cursor: pointer;
+    margin-right: 4px;
+}
+
+.top-item::after {
+    position: absolute;
+    margin-top: 40px;
+    margin-left: -12px;
+    content: "";
+    opacity: 0.05;
+    width: calc(100% + 23px);
+    border: 1px solid #000000;
+}
+
+.top-message {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    margin-left: 8px;
+}
+
+.bottom-message {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #212529;
+    margin-top: 10px;
+}
+
+.notification-item .bar {
+    height: 10px;
+}

@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+* {
+    --left-panel-width: 923px;
+    --form-width: 775px;
+    --form-margin: 48px;
+    --header-margin: 84px;
+    --input-padding-h: 16px;
+    --dropdown-width: 392px;
+}
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+}
