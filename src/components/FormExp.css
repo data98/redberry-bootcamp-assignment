@@ -1,9 +1,9 @@
-.form-basic {
+.form-exp {
     background-color: #FFF;
     height: 100vh;
 }
 
-.testimonial {
+.form-exp .testimonial {
     position: absolute;
     width: 600px;
     height: 83px;
@@ -18,17 +18,17 @@
     text-transform: uppercase;
 }
 
-.quote {
+.form-exp .quote {
     color: #212529;
 }
 
-.author {
+.form-exp .author {
     margin-top: 107px;
     color: #093F68;
     text-align: right;
 }
 
-.info--container {
+.form-exp .info--container {
     position: absolute;
     top: 0;
     left: var(--left-panel-width);
@@ -42,14 +42,14 @@
     margin-left: 48px;
 }
 
-.title {
+.form-exp .title {
     text-transform: capitalize;
 
     color: #212529;
     margin-top: 30px;
 }
 
-.form-basic::before {
+.form-exp::before {
     position: absolute;
     top: 0;
     left: var(--left-panel-width);
@@ -61,18 +61,18 @@
     background-color: rgba(185, 180, 196, 0.3);
 }
 
-.step-info {
+.form-exp .step-info {
     display: flex;
 }
 
-.step {
+.form-exp .step {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 60px;
 }
 
-.step--container {
+.form-exp .step--container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,27 +82,27 @@
     border-radius: 8px;
 }
 
-.step-info--start {
+.form-exp .step-info--start {
     color: #212529;
 }
 
-.first::after {
+.form-exp .first::after {
     content: "Personal information";
     font-weight: 400;
     color: #000000;
 }
 
-.second h3 {
+.form-exp .second h3 {
     color: #212529;
 }
 
-.second::after {
+.form-exp .second::after {
     content: "Chess experience";
     font-weight: 400;
     color: #000000;
 }
 
-.line {
+.form-exp .line {
     position: relative;
     top: -63px;
     left: -54px;
@@ -111,20 +111,20 @@
     border-bottom: 1px solid rgba(185, 180, 196, 0.3);
 }
 
-.step-info--finish {
+.form-exp .step-info--finish {
     color: #95939A;
 }
 
-.progress {
+.form-exp .progress {
     background-color: #E9FAF1;
 }
 
-.invalid {
+.form-exp .invalid {
     background-color: #FFEFEF;
     color: #DC3545;
 }
 
-.form-title {
+.form-exp .form-title {
     margin-top: 112px;
     font-weight: 600;
     font-size: 32px;
@@ -133,7 +133,7 @@
     color: #000000;
 }
 
-.subtitle{
+.form-exp .subtitle{
     font-weight: 600;
     font-size: 14px;
 
@@ -142,11 +142,11 @@
     color: #95939A;
 }
 
-.input-container {
+.form-exp .input-container {
     margin-top: 85px;
 }
 
-.input-container .dropdown-header {
+.form-exp .input-container .dropdown-header {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 400;
@@ -168,7 +168,7 @@
     flex-grow: 0;
 }
 
-.input-container .dropdown-header:required {
+.form-exp .input-container .dropdown-header:required {
     position: relative;
     content: "*";
 }
@@ -179,7 +179,7 @@
     background-color: #E9ECEF;
 } */
 
-.total {
+.form-exp .total {
     padding: 16px 0 0 10px;
     font-weight: 600;
     font-size: 16px;
@@ -191,7 +191,7 @@
     color: #817D7D;
 }
 
-.input-check {
+.form-exp .input-check {
     position: relative;
     top: -72px;
     left: calc(1* var(--form-width));
@@ -200,14 +200,14 @@
     color: #3BAF77;
 }
 
-.btn-nav {
+.form-exp .btn-nav {
     /* z-index: -1; */
     display: flex;
     justify-content: space-between;
     margin: 48px 0 10px 0;
 }
 
-.btn-nav button {
+.form-exp .btn-nav button {
     padding: 13px 24px;
     background-color: #212529;
     border-radius: 8px;
@@ -223,18 +223,18 @@
     text-transform: capitalize;
 }
 
-.btn-nav .main {
+.form-exp .btn-nav .main {
     margin-right: calc(-2 * var(--input-padding-h));
 }
 
-.btn-nav .secondary {
+.form-exp .btn-nav .secondary {
     text-decoration: none;
     background-color: #FFF;
     color: #212529;
 }
 
-.btn-nav .secondary:visited,
-.btn-nav .secondary:link {
+.form-exp .btn-nav .secondary:visited,
+.form-exp .btn-nav .secondary:link {
     text-decoration: none;
 }
 
@@ -242,33 +242,33 @@ a:-webkit-any-Link {
     text-decoration: none;
 }
 
-.btn-nav .secondary:hover {
+.form-exp .btn-nav .secondary:hover {
     background-color: #eae9ed;
 }
 
-.btn--container .icon {
+.form-exp .btn--container .icon {
     margin-left: 12px;
 }
 
-.btn-nav-contanier {
+.form-exp .btn-nav-contanier {
     margin-top: 200px;
 }
 
 /* From here the dropdown styles START */
-.dropdown {
+.form-exp .dropdown {
     width: var(--dropdown-width);
     border-radius: 10px;
     background-color: white;
 }
 
-.dropdown-header {
+.form-exp .dropdown-header {
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.dropdown-body {
+.form-exp .dropdown-body {
     position: absolute;
     
     display: none;
@@ -287,58 +287,58 @@ a:-webkit-any-Link {
     border-radius: 4px;
 }
 
-.input-container.flex {
+.form-exp .input-container.flex {
     display: flex;
     justify-content: space-between;
     width: var(--form-width);
 }
 
-.dropdown-body.open {
+.form-exp .dropdown-body.open {
     display: block;
     z-index: 99999;
     background-color: #fff;
     width: var(--dropdown-width);
 }
 
-.dropdown-item {
+.form-exp .dropdown-item {
     padding: 10px 0;
 }
 
-.dropdown-item-text {
+.form-exp .dropdown-item-text {
     padding: 0 10px;
 }
 
-.dropdown-item:hover {
+.form-exp .dropdown-item:hover {
     cursor: pointer;
     background-color: #f8f9fa;
     font-weight: 600;
     color: #000000;
 }
 
-.dropdown-item-dot {
+.form-exp .dropdown-item-dot {
     opacity: 0;
     color: #91A5BE;
     transition: all .2s ease-in-out;
 }
 
-.dropdown-item-dot.selected {
+.form-exp .dropdown-item-dot.selected {
     opacity: 1;
 }
 
-.dropdown .icon {
+.form-exp .dropdown .icon {
     font-size: 13px;
     color: #91A5BE;
     transform: rotate(-90deg);
     transition: all .2s ease-in-out;
 }
 
-.icon.open {
+.form-exp .icon.open {
     transform: rotate(90deg);
 }
 
 
 /* right dropdown styles start here */
 
-.character {
+.form-exp .character {
     margin-right: -32px;
 }

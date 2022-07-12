@@ -47,9 +47,9 @@ const FormBasic = () => {
             email: "", 
             phoneNumber: "", 
             dateOfBirth: "",
-            levelOfKnowledge: "",
-            character: "",
-            prevParticipation: ""
+            // levelOfKnowledge: "",
+            // character: "",
+            // prevParticipation: ""
         }
     )
     
@@ -59,11 +59,17 @@ const FormBasic = () => {
             email: false, 
             phoneNumber: false, 
             dateOfBirth: false,
-            levelOfKnowledge: false,
-            character: false,
-            prevParticipation: false
+            // levelOfKnowledge: false,
+            // character: false,
+            // prevParticipation: false
         }
     )
+
+    const [basicDone, setBasicDone] = useState(false)
+
+
+
+    
 
     const checkProgress = () => {
         var stepElement = document.getElementById("first-step");
@@ -102,17 +108,14 @@ const FormBasic = () => {
             case "name":
                 if(value.length >= 2) {
                     check(name, true)
-                    console.log("saxeli egari")
                 }else {
                     check(name, false);
-                    
                 }
                 break;
             case "email":
                 let temp = value.toLowerCase();
-                if(temp.length >= 14 && temp.includes("@redberry.ge")) {
+                if(temp.length >= 14 && temp.substr(temp.length - 12) === "@redberry.ge") {
                     check(name, true)
-                    console.log("mail egari")
                 }else {
                     check(name, false);
                 }
@@ -121,14 +124,9 @@ const FormBasic = () => {
                 var pattern = /^[0-9]{9}$/;
                 if(value.match(pattern)) {
                     check(name, true)
-                    console.log("tele egari")
                 }else {
                     check(name, false);
                 }
-                // else if(){
-                //     alert("cudi mesijia");
-                //     return false;
-                // }
                 break;
             case "dateOfBirth":
                 let subNum = parseInt(value.substr(0,4));
@@ -138,13 +136,12 @@ const FormBasic = () => {
                     subNum <= 2012) 
                 {
                     check(name, true)
-                    console.log(value)
                 }else {
                     check(name, false)
                 }
                 break;
             default:
-                console.log("default")
+                console.log("validate case default")
                 break;
         }
     }
@@ -179,20 +176,65 @@ const FormBasic = () => {
         else dateOfBirthElem.classList.add("invalid")
     }
 
-    const removeInvalidClass = (e) => {
-        let id = e.target.id
-        let elem = document.getElementById(id)
-        elem.classList.remove("invalid")
+    // const removeInvalidClass = (e) => {
+    //     let id = e.target.id
+    //     let elem = document.getElementById(id)
+    //     elem.classList.remove("invalid")
+    // }
+
+    console.log(formDataValid)
+
+    const storedFormData = JSON.parse(localStorage.getItem('formDataLS'))
+    const storedFormDataValid = JSON.parse(localStorage.getItem('formDataValidLS'))
+    
+    const getItemsFromLS = (storedFormData, storedFormDataValid) => {
+        if(storedFormData) {
+            setFormData({...storedFormData})
+        }
+        if(storedFormDataValid) {
+            setFormDataValid({...storedFormDataValid})
+        }
+    }
+    
+
+    const updateLS = () => {
+        localStorage.setItem('formDataLS', JSON.stringify(formData))
+        localStorage.setItem('formDataValidLS', JSON.stringify(formDataValid))
     }
 
     useEffect(() => {
+        getItemsFromLS(storedFormData, storedFormDataValid)
+    }, [])
+
+    useEffect(() => {
+        updateLS()
+    }, [formData])
+
+    // formData.name, 
+    //     formData.email,
+    //     formData.phoneNumber,
+    //     formData.dateOfBirth
+    useEffect(() => {
+
         checkProgress()
-        // validateField()
+        setBasicDone(() => {
+            if(formDataValid.name &&
+                formDataValid.email && 
+                formDataValid.phoneNumber &&
+                formDataValid.dateOfBirth)
+            {
+                return true
+            }else {
+                return false
+            }
+        })
     },[formDataValid.name, 
         formDataValid.email,
         formDataValid.phoneNumber,
         formDataValid.dateOfBirth])
     
+    // write useeffect for basicDone and save to localstorage
+
     return (
         <div className="form-basic">
             <div className="main-img-container section-left">
@@ -202,7 +244,9 @@ const FormBasic = () => {
             </div>
 
             <div className="info--container section-right">
-                <h4 className="title">Start creating your account</h4>
+                <div className="right-header">
+                    <h4 className="title">Start creating your account</h4>
+                </div>
                 <div className="step-info">
                     <div className="step first">
                         <h3 className="step-info--start step--container" id="first-step">
@@ -221,14 +265,15 @@ const FormBasic = () => {
                 <div className="input-container">
                     <input 
                         type="text" 
-                        placeholder="Name " 
+                        placeholder="Name" 
                         onChange={handleChange}
                         name="name"
                         value={formData.name}
                         id="name"
                         required  
-                        onFocus={(e) => {removeInvalidClass(e)}}  
+                        onFocus={(e) => {e.currentTarget.classList.remove("invalid")}}
                     />
+                    {formData.name.length === 0 && <span className="asterisk asterisk-name">*</span>}
                     {formDataValid.name && <FontAwesomeIcon className='input-check' icon={faCircleCheck} />}
 
                     <input 
@@ -238,17 +283,23 @@ const FormBasic = () => {
                         name="email"
                         value={formData.email}
                         id="email"
+                        required
+                        onFocus={(e) => {e.currentTarget.classList.remove("invalid")}}
                     />
+                    {formData.email.length === 0 && <span className="asterisk asterisk-email">*</span>}
                     {formDataValid.email && <FontAwesomeIcon className='input-check' icon={faCircleCheck} />}
 
                     <input 
                         type="tel" 
-                        placeholder="Phone number " 
+                        placeholder="Phone number "
                         onChange={handleChange}
                         name="phoneNumber"
                         value={formData.phoneNumber}
                         id="phoneNumber"
+                        required
+                        onFocus={(e) => {e.currentTarget.classList.remove("invalid")}}
                     />
+                    {formData.phoneNumber.length === 0 && <span className="asterisk asterisk-phoneNumber">*</span>}
                     {formDataValid.phoneNumber && <FontAwesomeIcon className='input-check' icon={faCircleCheck} />}
 
                     <input
@@ -256,6 +307,9 @@ const FormBasic = () => {
                         onFocus={(e)=> {
                             e.currentTarget.type = "date";
                             e.currentTarget.focus();
+                            e.currentTarget.classList.remove("invalid");
+                            e.currentTarget.min="1922-01-01" 
+                            e.currentTarget.max="2012-12-31"
                             }
                         }
                         placeholder="Date of birth "
@@ -263,11 +317,15 @@ const FormBasic = () => {
                         name="dateOfBirth"
                         value={formData.dateOfBirth}
                         id="dateOfBirth"
+                        required
                     />
+                    {formData.dateOfBirth.length === 0 && <span className="asterisk asterisk-dateOfBirth">*</span>}
                     {formDataValid.dateOfBirth && <FontAwesomeIcon className='input-check' icon={faCircleCheck} />}
                 </div>
                 <div className="btn-nav">
                     <Link to="/"><button className="btn--container secondary">Back</button></Link>
+                    {basicDone ? 
+                    <Link className="next-link" to="/info-exp" >
                     <button 
                         onClick={() => {
                             handleNewNotification()
@@ -277,6 +335,17 @@ const FormBasic = () => {
                         Next
                         <FontAwesomeIcon className='icon' icon={faCircleArrowRight} />
                     </button>
+                    </Link> : 
+                    <button 
+                        onClick={() => {
+                            handleNewNotification()
+                            validateField()
+                        }} 
+                        className="btn--container main btn-main">
+                        Next
+                        <FontAwesomeIcon className='icon' icon={faCircleArrowRight} />
+                    </button>
+                    }
                 </div>
             </div>
         </div>

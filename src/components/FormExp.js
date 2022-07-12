@@ -95,7 +95,7 @@ const FormExp = () => {
     }
 
     return (
-        <div className="form-basic">
+        <div className="form-exp">
             <div className="main-img-container section-left">
                 <img className="main--img" src={Pic} alt="chess" /> 
                 <h2 className="testimonial quote ">“Many have become chess masters <br />no one has become the master of chess.”</h2>
@@ -117,7 +117,7 @@ const FormExp = () => {
                 </div>
                 <div className="form-title">
                     <div>Chess experience</div>
-                    <div className="subtitle">This is Basic informaton fields</div>
+                    <div className="subtitle">This is chess informaton fields</div>
                 </div>
                 <div className="input-container flex">
                     <div className="dropdown knowledge">
@@ -142,7 +142,7 @@ const FormExp = () => {
                             <FontAwesomeIcon icon={faChevronRight} className={`icon ${isOpenCharacter && "open"}`}></FontAwesomeIcon>
                         </div>
                         <div className={`dropdown-body ${isOpenCharacter && "open"}`}>
-                            <div className="total">(Total 4)</div>
+                            <div className="total">(Total {itemsCharacter.length})</div>
                             {itemsCharacter.map(item => (
                             <div className="dropdown-item" onClick={e => handleItemClickCharacter(item.id)} id={item.id} key={v4()}>
                                 <div className="dropdown-item-text">
@@ -153,7 +153,7 @@ const FormExp = () => {
                         </div>
                     </div>
 
-                    <div className="prev-part">
+                    {/* <div className="prev-part">
                         <legend>Current employment status</legend>
                         <input 
                             type="radio"
@@ -186,7 +186,7 @@ const FormExp = () => {
                             onChange={handleChange}
                         />
                         <label htmlFor="full-time">Full-time</label>
-                    </div>
+                    </div> */}
                     {/* <div className="dropdown character">
                         <div className="dropdown-header" onClick={toggleDropdown("character")}>
                             {selectedItem ? itemsCharacter.find(item => item.id == selectedItem).label : "Choose your character"}

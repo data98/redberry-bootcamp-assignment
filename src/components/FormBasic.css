@@ -1,10 +1,9 @@
 .form-basic {
     background-color: #FFF;
-    /* width: 100%;    */
     height: 100vh;
 }
 
-.testimonial {
+.form-basic .testimonial {
     position: absolute;
     width: 423px;
     height: 83px;
@@ -19,16 +18,17 @@
     text-transform: uppercase;
 }
 
-.quote {
+.form-basic .quote {
     color: #212529;
 }
 
-.author {
+.form-basic .author {
+    text-align: left;
     margin-top: 107px;
     color: #E5E6E8;
 }
 
-.info--container {
+.form-basic .info--container {
     position: absolute;
     top: 0;
     left: var(--left-panel-width);
@@ -38,19 +38,28 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 150%;
-    /* identical to box height, or 24px */
     margin-left: 48px;
 }
 
-.title {
+.form-basic .title {
+    position: fixed;
     text-transform: capitalize;
-
+    z-index: 99999;
     color: #212529;
     margin-top: 30px;
 }
 
-.form-basic::before {
-    position: absolute;
+.form-basic .right-header {
+    position: fixed;
+    top: 0;
+    background-color: #FFF;
+
+    height: 84px;
+    width: 100%;
+}
+
+.form-basic .right-header::after {
+    position: fixed;
     top: 0;
     left: var(--left-panel-width);
     content: "";
@@ -61,18 +70,18 @@
     background-color: rgba(185, 180, 196, 0.3);
 }
 
-.step-info {
+.form-basic .step-info {
     display: flex;
 }
 
-.step {
+.form-basic .step {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 60px;
+    margin-top: 125px;
 }
 
-.step--container {
+.form-basic .step--container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,11 +91,11 @@
     border-radius: 8px;
 }
 
-.step-info--start {
+.form-basic .step-info--start {
     color: #212529;
 }
 
-.first::after {
+.form-basic .first::after {
     content: "Personal information";
     font-weight: 400;
     color: #000000;
@@ -98,7 +107,7 @@
     color: #000000;
 }
 
-.line {
+.form-basic .line {
     position: relative;
     top: -63px;
     left: -54px;
@@ -107,29 +116,35 @@
     border-bottom: 1px solid rgba(185, 180, 196, 0.3);
 }
 
-.step-info--finish {
+.form-basic .step-info--finish {
     color: #95939A;
 }
 
-.progress {
+.form-basic .progress {
     background-color: #E9FAF1;
 }
 
-.invalid {
+.form-basic .invalid {
     background-color: #FFEFEF;
+}
+
+.form-basic .input-container input.invalid::placeholder {
     color: #DC3545;
 }
 
-.form-title {
+.form-basic .input-container input.invalid {
+    color: #DC3545;
+}
+
+.form-basic .form-title {
     margin-top: 112px;
     font-weight: 600;
     font-size: 32px;
     line-height: 150%;
-    /* identical to box height, or 48px */
     color: #000000;
 }
 
-.subtitle{
+.form-basic .subtitle{
     font-weight: 600;
     font-size: 14px;
 
@@ -138,11 +153,11 @@
     color: #95939A;
 }
 
-.input-container {
+.form-basic .input-container {
     margin-top: 85px;
 }
 
-.input-container input {
+.form-basic .input-container input {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 400;
@@ -150,7 +165,7 @@
     line-height: 150%;
     color: #212529;
 
-    width: var(--form-width);
+    width: calc(var(--form-width) - 32px);
     height: 30px;
     padding: 8px 16px;
     margin-bottom: 40px;
@@ -158,45 +173,61 @@
     border: none;
     box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.125);
     border-radius: 4px;
-
-    /* Inside auto layout */
-
-    flex: none;
-    order: 2;
-    flex-grow: 0;
 }
 
-.input-container input:required {
-    position: relative;
-    content: "*";
+.form-basic .input-container input::placeholder{
+    color: #212529;
 }
 
-.info--container input:focus,
-.info--container input:active {
+.form-basic .asterisk {
+    position: absolute;
+    color: #DC3545;
+    font-weight: 400;
+    margin-top: 12px;
+}
+
+ .form-basic .asterisk-name {
+    margin-left: calc(-1 * var(--form-width) + 4.8em); 
+}
+
+.form-basic .asterisk-email {
+    margin-left: calc(-1 * var(--form-width) + 9.5em);
+}
+
+.form-basic .asterisk-phoneNumber {
+    margin-left: calc(-1 * var(--form-width) + 10.1em);
+}
+
+.form-basic .asterisk-dateOfBirth {
+    margin-left: calc(-1 * var(--form-width) + 8.7em);
+}
+
+.form-basic .info--container input:focus,
+.form-basic .info--container input:active {
     outline: none;
     background-color: #E9ECEF;
 }
 
-.info--container input:hover {
+.form-basic .info--container input:hover {
     background-color: #f8f9fa;
 }
 
-.input-check {
-    position: relative;
-    top: -72px;
-    left: calc(1* var(--form-width));
+.form-basic .input-check {
+    position: absolute;
+    left: calc(var(--form-width) - 33px);
+    margin-top: 13px;
     width: 20px; 
     height: 20px; 
     color: #3BAF77;
 }
 
-.btn-nav {
+.form-basic .btn-nav {
     display: flex;
     justify-content: space-between;
     margin: 48px 0 10px 0;
 }
 
-.btn-nav button {
+.form-basic .btn-nav button {
     padding: 13px 24px;
     background-color: #212529;
     border-radius: 8px;
@@ -212,18 +243,18 @@
     text-transform: capitalize;
 }
 
-.btn-nav .main {
+/* .form-basic .btn-nav .main {
     margin-right: calc(-2 * var(--input-padding-h));
-}
+} */
 
-.btn-nav .secondary {
+.form-basic .btn-nav .secondary {
     text-decoration: none;
     background-color: #FFF;
     color: #212529;
 }
 
-.btn-nav .secondary:visited,
-.btn-nav .secondary:link {
+.form-basic .btn-nav .secondary:visited,
+.form-basic .btn-nav .secondary:link {
     text-decoration: none;
 }
 
@@ -231,10 +262,14 @@ a:-webkit-any-Link {
     text-decoration: none;
 }
 
-.btn-nav .secondary:hover {
+.form-basic .btn-nav .secondary:hover {
     background-color: #eae9ed;
 }
 
-.btn--container .icon {
+.form-basic .btn--container .icon {
     margin-left: 12px;
+}
+
+.form-basic .next-link {
+    /* width: 127px; */
 }
