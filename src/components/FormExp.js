@@ -117,7 +117,7 @@ const FormExp = () => {
                 </div>
                 <div className="form-title">
                     <div>Chess experience</div>
-                    <div className="subtitle">This is chess informaton fields</div>
+                    <div className="subtitle">This is basic information fields</div>
                 </div>
                 <div className="input-container flex">
                     <div className="dropdown knowledge">
