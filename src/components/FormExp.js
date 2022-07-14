@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './FormExp.css'
 import Pic from '../assets/page-3.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,23 +7,38 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { v4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios'
+// import { NotificationContext } from '../Notifications/NotificationProvider';
+
 
 const FormExp = () => {
-    const [formDataExp, setFormDataExp] = useState(
-        {
-            levelOfKnowledge: "",
-            character: "",
-            prevParticipation: ""
-        }
-    )
+    // const dispatch = useContext(NotificationContext) 
 
-    const [formDataValidExp, setFormDataValidExp] = useState(
-        {
-            levelOfKnowledge: false,
-            character: false,
-            prevParticipation: false
-        }
-    )
+    // const makeDispatch = (val) => {
+    //     dispatch({
+    //         type: "ADD_NOTIFICATION",
+    //         payload: {
+    //             id: v4(),
+    //             type: "ERROR",
+    //             message: val
+    //         }
+    //     })
+    // }
+
+    // const handleNewNotification = () => {
+    //     if(!formDataValid.levelOfKnowledgeValid) {
+    //         makeDispatch("level of knowledge")
+    //         console.log("movedi")
+    //     }
+    //     if(!formDataValid.characterValid) {
+    //         makeDispatch("character")
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     handleNewNotification()
+    // }, [formDataValid])
+
 
     const dataKnowledge = [
         {   
@@ -40,34 +55,13 @@ const FormExp = () => {
         }
     ];
 
-    const dataCharacter = [
-        {   
-            id: 1, 
-            label: "Magnus Carlsen"
-        }, 
-        {
-            id: 2,
-            label: "Wilhelm Steinitz"
-        },
-        {
-            id: 3, 
-            label: "Bobby Fischer"
-        },
-        {
-            id: 4, 
-            label: "Nona Gafrindashvili"
-        }
-    ];
-
     const [isOpenKnowlegde, setIsOpenKnowledge] = useState(false);
     const [isOpenCharacter, setIsOpenCharacter] = useState(false)
     const [itemsKnowledge, setItemKnowledge] = useState(dataKnowledge);
-    const [itemsCharacter, setItemCharacter] = useState(dataCharacter);
+    // const [itemsCharacter, setItemCharacter] = useState(dataCharacter);
     const [selectedItemKnowledge, setSelectedItemKnowledge] = useState(null);
     const [selectedItemCharacter, setSelectedItemCharacter] = useState(null);
     
-    // console.log(itemsKnowledge[selectedItemKnowledge-1])
-
     const toggleDropdownKnowledge = () => {
         setIsOpenKnowledge(!isOpenKnowlegde);
     }
@@ -78,21 +72,154 @@ const FormExp = () => {
     const handleItemClickKnowledge = (id) => {
         selectedItemKnowledge == id ? setSelectedItemKnowledge(null) : setSelectedItemKnowledge(id);
         setIsOpenKnowledge(!isOpenKnowlegde)
+        // console.log(itemsKnowledge.find(item => item.id == selectedItemKnowledge).label)
+        // dataKnowledge.map(item => item.id === selectedItemKnowledge && console.log("movedi"))
     }
     const handleItemClickCharacter = (id) => {
         selectedItemCharacter == id ? setSelectedItemCharacter(null) : setSelectedItemCharacter(id);
         setIsOpenCharacter(!isOpenCharacter)
     }
 
-    function handleChange(event) {
+    const checkProgress = () => {
+        var stepElement = document.getElementById("second-step");
+        var knowledgeElem = document.getElementById("levelOfKnowledge").innerText
+        var characterElem = document.getElementById("character").innerText
+        if(isOpenKnowlegde || 
+            isOpenCharacter ||
+            (!knowledgeElem.includes("*") && knowledgeElem !== "") ||
+            (!characterElem.includes("*") && characterElem !== ""))
+        {
+            stepElement.classList.add("progress");
+        }else {
+            stepElement.classList.remove("progress");
+        }
+    }
+
+    const [apiData, setApiData] = useState()
+        
+    const [formData, setFormData] = useState(
+        {
+            levelOfKnowledge: "",
+            character: null,
+            prevParticipation: true
+        }
+    )
+
+    const [formDataValid, setFormDataValid] = useState(
+        {
+            levelOfKnowledgeValid: false,
+            characterValid: false,
+            prevParticipation: true
+        }
+    )
+
+    console.log("data", formData)
+    console.log("valid", formDataValid)
+
+    const handleNextClick = () => {
+        const knowledgeText = document.getElementById("levelOfKnowledge").innerText.toLowerCase()
+        console.log(formData)
+        if(!knowledgeText.includes("*")){
+            setFormDataValid(prevFormDataValid => {
+                return {
+                    ...prevFormDataValid,
+                    levelOfKnowledgeValid: true
+                }
+            })
+            setFormData(prevFormData => {
+                return {
+                    ...prevFormData,
+                    levelOfKnowledge: knowledgeText === "intermediate" ? "normal" : knowledgeText
+                }
+            })
+        }
+
+        const characterText = document.getElementById("character").innerText
+        if(!characterText.includes("*")){
+            let characterID;
+            apiData.map(item => { if(item.name === characterText) characterID = item.id })
+            setFormDataValid(prevFormDataValid => {
+                return {
+                    ...prevFormDataValid,
+                    characterValid: true
+                }
+            })
+            setFormData(prevFormData => {
+                return {
+                    ...prevFormData,
+                    character: characterID
+                }
+            })
+        }
+    }
+
+    const [expDone, setExpDone] = useState(false)
+
+    const validateField = () => {
+
+        if(formData.levelOfKnowledge !== "" && formData.character !== null){
+            setExpDone(true)
+
+        }
+    }
+
+    const handleChange = (event) => {
         const {name, value} = event.target
-        setFormDataExp(prevFormData => {
+        const boolValue = value === "yes" ? true : false
+        setFormData(prevFormData => {
             return {
                 ...prevFormData,
-                [name]: value
+                [name]: boolValue
             }
         })
     }
+
+    
+
+    // const storedFormData = JSON.parse(localStorage.getItem('formDataExpLS'))
+    // const storedFormDataValid = JSON.parse(localStorage.getItem('formDataValidExpLS'))
+    
+    // const getItemsFromLS = (storedFormData, storedFormDataValid) => {
+    //     if(storedFormData) {
+    //         setFormData({...storedFormData})
+    //     }
+    //     if(storedFormDataValid) {
+    //         setFormDataValid({...storedFormDataValid})
+    //     }
+    // }
+
+    // const updateLS = () => {
+    //     localStorage.setItem('formDataExpLS', JSON.stringify(formData))
+    //     localStorage.setItem('formDataValidExpLS', JSON.stringify(formDataValid))
+    // }
+
+    // useEffect(() => {
+    //     getItemsFromLS(storedFormData, storedFormDataValid)
+    // }, [])
+
+    // useEffect(() => {
+    //     updateLS()
+    // }, [formData])
+
+
+
+
+
+    useEffect(() => {
+        checkProgress()
+    }, [isOpenCharacter, isOpenKnowlegde])
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await axios.get("https://chess-tournament-api.devtest.ge/api/grandmasters");
+                setApiData(response.data)
+                
+            } catch (error) {
+                console.log(error)
+            }
+        })()
+    }, [])
 
     return (
         <div className="form-exp">
@@ -120,14 +247,19 @@ const FormExp = () => {
                     <div className="subtitle">This is basic information fields</div>
                 </div>
                 <div className="input-container flex">
+
+                    
+
+
                     <div className="dropdown knowledge">
-                        <div className="dropdown-header" onClick={toggleDropdownKnowledge}>
+                        <div id="levelOfKnowledge" className="dropdown-header" onClick={toggleDropdownKnowledge}>
                             {selectedItemKnowledge ? itemsKnowledge.find(item => item.id == selectedItemKnowledge).label : "level of knowledge"}
+                            {selectedItemKnowledge === null && <span className="asterisk asterisk-knowledge">*</span>}
                             <FontAwesomeIcon icon={faChevronRight} className={`icon ${isOpenKnowlegde && "open"}`}></FontAwesomeIcon>
                         </div>
                         <div className={`dropdown-body ${isOpenKnowlegde && 'open'}`}>
                             {itemsKnowledge.map(item => (
-                            <div className="dropdown-item" onClick={e => handleItemClickKnowledge(item.id)} id={item.id} key={v4()}>
+                            <div className="dropdown-item" onClick={e => handleItemClickKnowledge(item.id)}  key={v4()}>
                                 <div className="dropdown-item-text">
                                     {item.label}
                                 </div>
@@ -137,131 +269,84 @@ const FormExp = () => {
                     </div>
                     
                     <div className="dropdown character">
-                        <div className="dropdown-header" onClick={toggleDropdownCharacter}>
-                            {selectedItemCharacter ? itemsCharacter.find(item => item.id == selectedItemCharacter).label : "Choose your character"}
+                        <div id="character" className="dropdown-header" onClick={toggleDropdownCharacter}>
+                            {selectedItemCharacter ? apiData.find(item => item.id == selectedItemCharacter).name : "Choose your character"}
+                            {selectedItemCharacter === null && <span className="asterisk asterisk-character">*</span>}
                             <FontAwesomeIcon icon={faChevronRight} className={`icon ${isOpenCharacter && "open"}`}></FontAwesomeIcon>
                         </div>
                         <div className={`dropdown-body ${isOpenCharacter && "open"}`}>
-                            <div className="total">(Total {itemsCharacter.length})</div>
-                            {itemsCharacter.map(item => (
+                            <div className="total">(Total {apiData && apiData.length})</div>
+                            {apiData && apiData.map(item => (
                             <div className="dropdown-item" onClick={e => handleItemClickCharacter(item.id)} id={item.id} key={v4()}>
                                 <div className="dropdown-item-text">
-                                    {item.label}
+                                    {item.name}
+                                </div>
+                                <div className="dropdown-item-image">
+                                    <img className="dropdown-image" src={`https://chess-tournament-api.devtest.ge${item.image}`} />
                                 </div>
                             </div>
                             ))}
                         </div>
                     </div>
-
-                    {/* <div className="prev-part">
-                        <legend>Current employment status</legend>
-                        <input 
-                            type="radio"
-                            id="unemployed"
-                            name="employment"
-                            value="unemployed"
-                            checked={formDataExp.employment === "unemployed"}
-                            onChange={handleChange}
-                        />
-                        <label htmlFor="unemployed">Unemployed</label>
-                        <br />
-                        
-                        <input 
-                            type="radio"
-                            id="part-time"
-                            name="employment"
-                            value="part-time"
-                            checked={formDataExp.employment === "part-time"}
-                            onChange={handleChange}
-                        />
-                        <label htmlFor="part-time">Part-time</label>
-                        <br />
-                        
-                        <input 
-                            type="radio"
-                            id="full-time"
-                            name="employment"
-                            value="full-time"
-                            checked={formDataExp.employment === "full-time"}
-                            onChange={handleChange}
-                        />
-                        <label htmlFor="full-time">Full-time</label>
-                    </div> */}
-                    {/* <div className="dropdown character">
-                        <div className="dropdown-header" onClick={toggleDropdown("character")}>
-                            {selectedItem ? itemsCharacter.find(item => item.id == selectedItem).label : "Choose your character"}
-                            <FontAwesomeIcon icon={faChevronRight} className={`icon ${isOpenCharacter && "open"}`}></FontAwesomeIcon>
-                        </div>
-                        <div className={`dropdown-body ${isOpenCharacter && 'open'}`}>
-                            {itemsCharacter.map(item => (
-                            <div className="dropdown-item" onClick={e => handleItemClick(e.target.id)} id={item.id} key={v4()}>
-                                <div className="dropdown-item-text">
-                                    {item.label}
-                                </div>
-                            </div>
-                            ))}
-                        </div>
-                    </div> */}
-
-                    {/* <input 
-                        type="text" 
-                        placeholder="Name " 
-                        onChange={handleChange}
-                        name="name"
-                        value={formData.name}
-                        id="name"
-                        required  
-                        onFocus={(e) => {removeInvalidClass(e)}}  
-                    />
-                    {formDataValid.name && <FontAwesomeIcon className='input-check' icon={faCircleCheck} />}
-
-                    <input 
-                        type="email" 
-                        placeholder="Email address "
-                        onChange={handleChange}
-                        name="email"
-                        value={formData.email}
-                        id="email"
-                    />
-                    {formDataValid.email && <FontAwesomeIcon className='input-check' icon={faCircleCheck} />}
-
-                    <input 
-                        type="tel" 
-                        placeholder="Phone number " 
-                        onChange={handleChange}
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        id="phoneNumber"
-                    />
-                    {formDataValid.phoneNumber && <FontAwesomeIcon className='input-check' icon={faCircleCheck} />}
-
-                    <input
-                        type="text"
-                        onFocus={(e)=> {
-                            e.currentTarget.type = "date";
-                            e.currentTarget.focus();
-                            }
-                        }
-                        placeholder="Date of birth "
-                        onChange={handleChange}
-                        name="dateOfBirth"
-                        value={formData.dateOfBirth}
-                        id="dateOfBirth"
-                    />
-                    {formDataValid.dateOfBirth && <FontAwesomeIcon className='input-check' icon={faCircleCheck} />} */}
                 </div>
+                
+                <div className="radio">
+                        
+                    <legend>Have you participated in the Redberry Championship? <span className="asterisk asterisk-participation">*</span></legend>
+                    <div className="answers">
+                        <div className="yes">
+                            <input 
+                                type="radio"
+                                id="yes"
+                                name="prevParticipation"
+                                value="yes"
+                                checked={formData.prevParticipation}
+                                onChange={handleChange}
+                            />
+                            <label htmlFor="yes">Yes</label>
+                        </div>
+                        <div className="no">
+                            <input 
+                                type="radio"
+                                id="no"
+                                name="prevParticipation"
+                                value="no"
+                                checked={!formData.prevParticipation}
+                                onChange={handleChange}
+                            />
+                            <label htmlFor="no">No</label>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="btn-nav-contanier">
                     <div className="btn-nav">
                         <Link to="/info-basic"><button className="btn--container secondary">Back</button></Link>
-                        <button 
-                            // onClick={() => {
-                            //     handleNewNotification()
-                            //     validateField()
-                            // }} 
+                        {expDone ? 
+                        <Link to="/completion"><button 
+                            onClick={() => {
+                                // handleNewNotification()
+                                // validateField()
+
+                                handleNextClick()
+                                validateField()
+                                // handleNewNotification()
+                            }} 
                             className="btn--container main btn-main">
                             Next
                             <FontAwesomeIcon className='icon' icon={faCircleArrowRight} />
-                        </button>
+                        </button></Link> :
+                        <button 
+                            onClick={() => {
+                                handleNextClick()
+                                validateField()
+                                
+                                // handleNewNotification()
+                            }} 
+                            className="btn--container main btn-main">
+                            Next
+                            <FontAwesomeIcon className='icon' icon={faCircleArrowRight} />
+                        </button>}
                     </div>
                 </div>
             </div>

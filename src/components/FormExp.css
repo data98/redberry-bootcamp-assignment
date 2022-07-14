@@ -262,7 +262,15 @@ a:-webkit-any-Link {
     position: absolute;
     color: #DC3545;
     font-weight: 400;
-    margin-top: 12px;
+    margin-top: 5px;
+}
+
+.form-exp .asterisk-knowledge {
+    margin-left: 8.9em; 
+}
+
+.form-exp .asterisk-character {
+    margin-left: 10.9em; 
 }
 
 .form-exp .dropdown-body {
@@ -298,6 +306,9 @@ a:-webkit-any-Link {
 }
 
 .form-exp .dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px 0;
 }
 
@@ -339,3 +350,82 @@ a:-webkit-any-Link {
 .form-exp .character {
     margin-right: -32px;
 }
+
+/* .dropdown-item-text {
+    width: 60%;
+} */
+
+.form-exp .dropdown-item-image {
+    margin-right: 20px;
+}
+
+.form-exp .dropdown-image {
+    width: 100px;
+    height: 72px;
+    background-size: cover;
+    border-radius: 4px;
+}
+
+.form-exp .radio {
+    margin-top: 88px;
+    margin-left: 14px;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+}
+
+.form-exp .answers {
+    display: flex;
+    margin-top: 20px;
+}
+
+.form-exp .asterisk-participation {
+    margin-top: 2px;
+    margin-left: 5px;
+}
+
+.form-exp .radio legend {
+    
+    font-size: 20px;
+    line-height: 150%;
+    color: #212529;
+    align-self: stretch;
+}
+
+.form-exp .answers label {
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.form-exp .answers .no {
+    margin-left: 18px;
+}
+
+.form-exp .answers .yes,
+.form-exp .answers .no {
+    display: flex;
+    align-items: center;
+}
+
+.form-exp .answers input {
+    width: 20px;
+    height: 20px;
+    /* border: 1px solid #D9D9D9; */
+    border: 5px solid #0D6EFD;
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-appearance:none;
+
+    /* background-color: #0D6EFD; */
+}
+
+.form-exp .answers input:checked{
+    color: red;
+}
+
+.form-exp .answers [type="radio"]:not(:checked) {
+    border: 1px solid #D9D9D9;;
+} 
+
+
