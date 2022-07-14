@@ -8,37 +8,30 @@ import { v4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios'
-// import { NotificationContext } from '../Notifications/NotificationProvider';
+import { NotificationContext } from '../Notifications/NotificationProvider';
 
 
 const FormExp = () => {
-    // const dispatch = useContext(NotificationContext) 
+    const dispatch = useContext(NotificationContext) 
+    const makeDispatch = (val) => {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                id: v4(),
+                type: "ERROR",
+                message: val
+            }
+        })
+    }
 
-    // const makeDispatch = (val) => {
-    //     dispatch({
-    //         type: "ADD_NOTIFICATION",
-    //         payload: {
-    //             id: v4(),
-    //             type: "ERROR",
-    //             message: val
-    //         }
-    //     })
-    // }
-
-    // const handleNewNotification = () => {
-    //     if(!formDataValid.levelOfKnowledgeValid) {
-    //         makeDispatch("level of knowledge")
-    //         console.log("movedi")
-    //     }
-    //     if(!formDataValid.characterValid) {
-    //         makeDispatch("character")
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     handleNewNotification()
-    // }, [formDataValid])
-
+    const handleNewNotification = () => {
+        if(!formDataValid.levelOfKnowledgeValid) {
+            makeDispatch("level of knowledge")
+        }
+        if(!formDataValid.characterValid) {
+            makeDispatch("character")
+        }
+    }
 
     const dataKnowledge = [
         {   
@@ -69,25 +62,45 @@ const FormExp = () => {
         setIsOpenCharacter(!isOpenCharacter);
     }
     
-    const handleItemClickKnowledge = (id) => {
-        selectedItemKnowledge == id ? setSelectedItemKnowledge(null) : setSelectedItemKnowledge(id);
+    const handleItemClickKnowledge = (label) => {
+        selectedItemKnowledge === label ? setSelectedItemKnowledge(null) : setSelectedItemKnowledge(label);
         setIsOpenKnowledge(!isOpenKnowlegde)
-        // console.log(itemsKnowledge.find(item => item.id == selectedItemKnowledge).label)
-        // dataKnowledge.map(item => item.id === selectedItemKnowledge && console.log("movedi"))
+        setFormData(prevState => {
+            return {
+                ...prevState,
+                levelOfKnowledge: label === "Intermediate" ? "normal" : label.toLowerCase()
+            }
+        })
+        setFormDataValid(prevState => {
+            return {
+                ...prevState,
+                levelOfKnowledgeValid: true
+            }
+        })
     }
     const handleItemClickCharacter = (id) => {
         selectedItemCharacter == id ? setSelectedItemCharacter(null) : setSelectedItemCharacter(id);
         setIsOpenCharacter(!isOpenCharacter)
+        setFormData(prevState => {
+            return {
+                ...prevState,
+                character: id
+            }
+        })
+        setFormDataValid(prevState => {
+            return {
+                ...prevState,
+                characterValid: true
+            }
+        })
     }
 
     const checkProgress = () => {
         var stepElement = document.getElementById("second-step");
-        var knowledgeElem = document.getElementById("levelOfKnowledge").innerText
-        var characterElem = document.getElementById("character").innerText
         if(isOpenKnowlegde || 
             isOpenCharacter ||
-            (!knowledgeElem.includes("*") && knowledgeElem !== "") ||
-            (!characterElem.includes("*") && characterElem !== ""))
+            formDataValid.levelOfKnowledgeValid ||
+            formDataValid.characterValid)
         {
             stepElement.classList.add("progress");
         }else {
@@ -113,53 +126,11 @@ const FormExp = () => {
         }
     )
 
-    console.log("data", formData)
-    console.log("valid", formDataValid)
-
-    const handleNextClick = () => {
-        const knowledgeText = document.getElementById("levelOfKnowledge").innerText.toLowerCase()
-        console.log(formData)
-        if(!knowledgeText.includes("*")){
-            setFormDataValid(prevFormDataValid => {
-                return {
-                    ...prevFormDataValid,
-                    levelOfKnowledgeValid: true
-                }
-            })
-            setFormData(prevFormData => {
-                return {
-                    ...prevFormData,
-                    levelOfKnowledge: knowledgeText === "intermediate" ? "normal" : knowledgeText
-                }
-            })
-        }
-
-        const characterText = document.getElementById("character").innerText
-        if(!characterText.includes("*")){
-            let characterID;
-            apiData.map(item => { if(item.name === characterText) characterID = item.id })
-            setFormDataValid(prevFormDataValid => {
-                return {
-                    ...prevFormDataValid,
-                    characterValid: true
-                }
-            })
-            setFormData(prevFormData => {
-                return {
-                    ...prevFormData,
-                    character: characterID
-                }
-            })
-        }
-    }
-
     const [expDone, setExpDone] = useState(false)
 
     const validateField = () => {
-
-        if(formData.levelOfKnowledge !== "" && formData.character !== null){
+        if(formDataValid.levelOfKnowledgeValid && formDataValid.characterValid){
             setExpDone(true)
-
         }
     }
 
@@ -174,47 +145,55 @@ const FormExp = () => {
         })
     }
 
+    const storedFormData = JSON.parse(localStorage.getItem('formDataExpLS'))
+    const storedFormDataValid = JSON.parse(localStorage.getItem('formDataValidExpLS'))
     
+    const getItemsFromLS = (storedFormData, storedFormDataValid) => {
+        if(storedFormData) {
+            setFormData({...storedFormData})
+        }
+        if(storedFormDataValid) {
+            setFormDataValid(prevState => {
+                return {
+                    ...prevState,
+                    levelOfKnowledgeValid: storedFormDataValid.levelOfKnowledgeValid,
+                    characterValid: storedFormDataValid.characterValid
+                }
+            })
+        }
+    }
 
-    // const storedFormData = JSON.parse(localStorage.getItem('formDataExpLS'))
-    // const storedFormDataValid = JSON.parse(localStorage.getItem('formDataValidExpLS'))
-    
-    // const getItemsFromLS = (storedFormData, storedFormDataValid) => {
-    //     if(storedFormData) {
-    //         setFormData({...storedFormData})
-    //     }
-    //     if(storedFormDataValid) {
-    //         setFormDataValid({...storedFormDataValid})
-    //     }
-    // }
+    const updateLS = () => {
+        localStorage.setItem('formDataExpLS', JSON.stringify(formData))
+        localStorage.setItem('formDataValidExpLS', JSON.stringify(formDataValid))
+    }
 
-    // const updateLS = () => {
-    //     localStorage.setItem('formDataExpLS', JSON.stringify(formData))
-    //     localStorage.setItem('formDataValidExpLS', JSON.stringify(formDataValid))
-    // }
+    useEffect(() => {
+        getItemsFromLS(storedFormData, storedFormDataValid)   
+    }, [])
 
-    // useEffect(() => {
-    //     getItemsFromLS(storedFormData, storedFormDataValid)
-    // }, [])
+    useEffect(() => {
+        validateField()
+    }, [formDataValid])
 
-    // useEffect(() => {
-    //     updateLS()
-    // }, [formData])
-
-
-
-
+    useEffect(() => {
+        updateLS()
+    }, [formData])
 
     useEffect(() => {
         checkProgress()
-    }, [isOpenCharacter, isOpenKnowlegde])
+    }, [isOpenCharacter, isOpenKnowlegde, formDataValid.levelOfKnowledgeValid,
+        formDataValid.characterValid])
 
     useEffect(() => {
         (async () => {
             try {
                 const response = await axios.get("https://chess-tournament-api.devtest.ge/api/grandmasters");
                 setApiData(response.data)
-                
+                setSelectedItemKnowledge(storedFormData.levelOfKnowledge === "normal"
+                                ? "Intermediate" 
+                                : storedFormData.levelOfKnowledge.charAt(0).toUpperCase()+storedFormData.levelOfKnowledge.substr(1))
+                setSelectedItemCharacter(storedFormData.character)
             } catch (error) {
                 console.log(error)
             }
@@ -230,7 +209,9 @@ const FormExp = () => {
             </div>
 
             <div className="info--container section-right">
-                <h4 className="title">First step is done, continue to finish onboarding</h4>
+                <h4 className="title">{formDataValid.levelOfKnowledgeValid && formDataValid.characterValid 
+                                        ? "Almost done! " 
+                                        : "First step is done, continue to finish onboarding"}</h4>
                 <div className="step-info">
                     <div className="step first">
                         <h3 className="step-info--start step--container progress" id="first-step">
@@ -253,13 +234,13 @@ const FormExp = () => {
 
                     <div className="dropdown knowledge">
                         <div id="levelOfKnowledge" className="dropdown-header" onClick={toggleDropdownKnowledge}>
-                            {selectedItemKnowledge ? itemsKnowledge.find(item => item.id == selectedItemKnowledge).label : "level of knowledge"}
+                            {selectedItemKnowledge ? selectedItemKnowledge : "level of knowledge"}
                             {selectedItemKnowledge === null && <span className="asterisk asterisk-knowledge">*</span>}
                             <FontAwesomeIcon icon={faChevronRight} className={`icon ${isOpenKnowlegde && "open"}`}></FontAwesomeIcon>
                         </div>
                         <div className={`dropdown-body ${isOpenKnowlegde && 'open'}`}>
                             {itemsKnowledge.map(item => (
-                            <div className="dropdown-item" onClick={e => handleItemClickKnowledge(item.id)}  key={v4()}>
+                            <div className="dropdown-item" onClick={e => handleItemClickKnowledge(item.label)}  key={v4()}>
                                 <div className="dropdown-item-text">
                                     {item.label}
                                 </div>
@@ -282,7 +263,7 @@ const FormExp = () => {
                                     {item.name}
                                 </div>
                                 <div className="dropdown-item-image">
-                                    <img className="dropdown-image" src={`https://chess-tournament-api.devtest.ge${item.image}`} />
+                                    <img className="dropdown-image" alt="character" src={`https://chess-tournament-api.devtest.ge${item.image}`} />
                                 </div>
                             </div>
                             ))}
@@ -325,12 +306,7 @@ const FormExp = () => {
                         {expDone ? 
                         <Link to="/completion"><button 
                             onClick={() => {
-                                // handleNewNotification()
-                                // validateField()
-
-                                handleNextClick()
-                                validateField()
-                                // handleNewNotification()
+                                handleNewNotification()
                             }} 
                             className="btn--container main btn-main">
                             Next
@@ -338,10 +314,7 @@ const FormExp = () => {
                         </button></Link> :
                         <button 
                             onClick={() => {
-                                handleNextClick()
-                                validateField()
-                                
-                                // handleNewNotification()
+                                handleNewNotification()
                             }} 
                             className="btn--container main btn-main">
                             Next

@@ -67,10 +67,6 @@ const FormBasic = () => {
 
     const [basicDone, setBasicDone] = useState(false)
 
-
-
-    
-
     const checkProgress = () => {
         var stepElement = document.getElementById("first-step");
         if(formDataValid.name || 
@@ -176,14 +172,6 @@ const FormBasic = () => {
         else dateOfBirthElem.classList.add("invalid")
     }
 
-    // const removeInvalidClass = (e) => {
-    //     let id = e.target.id
-    //     let elem = document.getElementById(id)
-    //     elem.classList.remove("invalid")
-    // }
-
-    console.log(formDataValid)
-
     const storedFormData = JSON.parse(localStorage.getItem('formDataLS'))
     const storedFormDataValid = JSON.parse(localStorage.getItem('formDataValidLS'))
     
@@ -210,10 +198,6 @@ const FormBasic = () => {
         updateLS()
     }, [formData])
 
-    // formData.name, 
-    //     formData.email,
-    //     formData.phoneNumber,
-    //     formData.dateOfBirth
     useEffect(() => {
 
         checkProgress()
@@ -233,8 +217,6 @@ const FormBasic = () => {
         formDataValid.phoneNumber,
         formDataValid.dateOfBirth])
     
-    // write useeffect for basicDone and save to localstorage
-
     return (
         <div className="form-basic">
             <div className="main-img-container section-left">

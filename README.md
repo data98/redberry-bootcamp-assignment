@@ -1,6 +1,6 @@
 # Redberry bootcamp assignment form
 
-This project is a simple chess championship form with uuid, fontawesome, react-router.
+This project is a simple chess championship form with react, react-router, fontawesome, uuid and axios.
 
 ## Technologies
 
@@ -11,6 +11,7 @@ Project is created with:
 - "react-router-dom": "^6.3.0",
 - "react-scripts": "^2.1.3",
 - "uuid": "^8.3.2"
+- "axios": "^0.27.2"
 - "@fortawesome/fontawesome-svg-core": "^6.1.1",
 - "@fortawesome/free-regular-svg-icons": "^6.1.1",
 - "@fortawesome/free-solid-svg-icons": "^6.1.1",
